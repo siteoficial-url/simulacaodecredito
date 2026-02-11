@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Bancário - Cash no Pix</title>
+    <style>
+        :root {
+            --neon-green: #39ff14;
+            --dark-bg: #0a0a0a;
+            --input-bg: #1a1a1a;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: #111;
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--neon-green);
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: var(--neon-green);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: var(--input-bg);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: white;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
+        }
+
+        /* Efeito do Botão Piscante */
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 5px var(--neon-green); transform: scale(1); }
+            50% { box-shadow: 0 0 20px var(--neon-green); transform: scale(1.02); }
+            100% { box-shadow: 0 0 5px var(--neon-green); transform: scale(1); }
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--neon-green);
+            color: black;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            animation: pulse-glow 2s infinite ease-in-out;
+            transition: 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #32cd10;
+            animation: none;
+            box-shadow: 0 0 30px var(--neon-green);
+        }
+
+        .footer-note {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Registro Bancário</h2>
+    <p style="color: #888; font-size: 0.9rem; margin-bottom: 20px;">Cash no Pix</p>
+    
+    <form id="pixForm">
+        <div class="input-group">
+            <label for="nome">Nome Completo</label>
+            <input type="text" id="nome" placeholder="Digite seu nome" required>
+        </div>
+
+        <div class="input-group">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" placeholder="seu@email.com" required>
+        </div>
+
+        <div class="input-group">
+            <label for="pix">Chave PIX (CPF, Celular ou Email)</label>
+            <input type="text" id="pix" placeholder="Insira sua chave" required>
+        </div>
+
+        <button type="submit" class="btn-submit">FINALIZAR E CONTINUAR</button>
+    </form>
+
+    <p class="footer-note">Seus dados estão criptografados e seguros.</p>
+</div>
+
+<script>
+    document.getElementById('pixForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Simulação rápida de processamento (pode ser removida se quiser redirecionamento instantâneo)
+        const nome = document.getElementById('nome').value;
+        console.log("Processando registro para: " + nome);
+
+        // Redirecionamento direto para a URL solicitada
+        window.location.href = "https://siteoficial-url.github.io/registro/";
+    });
+</script>
+
+</body>
+</html>
