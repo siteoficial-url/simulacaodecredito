@@ -1,150 +1,881 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro Bancário - Cash no Pix</title>
+    <title>CredFácil AI - Empréstimo Rápido para Negativados</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0a0a0a',
+                        cardBg: '#121212',
+                        cardBorder: '#222222',
+                        emeraldNeon: '#10b981',
+                        emeraldHover: '#059669',
+                        emeraldLight: '#34d399',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --neon-green: #39ff14;
-            --dark-bg: #0a0a0a;
-            --input-bg: #1a1a1a;
-        }
-
         body {
-            background-color: var(--dark-bg);
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #f3f4f6;
         }
-
-        .container {
-            background: #111;
-            padding: 2rem;
-            border-radius: 15px;
-            border: 1px solid var(--neon-green);
-            box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
+        .glow-emerald {
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.25);
         }
-
-        h2 {
-            color: var(--neon-green);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        .glow-emerald-lg {
+            box-shadow: 0 0 40px rgba(16, 185, 129, 0.4);
         }
-
-        .input-group {
-            margin-bottom: 1.2rem;
-            text-align: left;
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-            color: #ccc;
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
         }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            background: var(--input-bg);
-            border: 1px solid #333;
-            border-radius: 8px;
-            color: white;
-            box-sizing: border-box;
-            outline: none;
-            transition: 0.3s;
+        ::-webkit-scrollbar-thumb {
+            background: #222222;
+            border-radius: 4px;
         }
-
-        input:focus {
-            border-color: var(--neon-green);
-            box-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
-        }
-
-        /* Efeito do Botão Piscante */
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 5px var(--neon-green); transform: scale(1); }
-            50% { box-shadow: 0 0 20px var(--neon-green); transform: scale(1.02); }
-            100% { box-shadow: 0 0 5px var(--neon-green); transform: scale(1); }
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 15px;
-            background-color: var(--neon-green);
-            color: black;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-top: 1rem;
-            animation: pulse-glow 2s infinite ease-in-out;
-            transition: 0.3s;
-        }
-
-        .btn-submit:hover {
-            background-color: #32cd10;
-            animation: none;
-            box-shadow: 0 0 30px var(--neon-green);
-        }
-
-        .footer-note {
-            font-size: 0.7rem;
-            color: #666;
-            margin-top: 1.5rem;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
 
-<div class="container">
-    <h2>Registro Bancário</h2>
-    <p style="color: #888; font-size: 0.9rem; margin-bottom: 20px;">Cash no Pix</p>
-    
-    <form id="pixForm">
-        <div class="input-group">
-            <label for="nome">Nome Completo</label>
-            <input type="text" id="nome" placeholder="Digite seu nome" required>
+    <!-- Header -->
+    <header class="w-full border-b border-cardBorder bg-darkBg/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="goToStep(0)">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xl glow-emerald">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-xl tracking-tight text-white">CredFácil <span class="text-emerald-400">AI</span></h1>
+                    <p class="text-xs text-zinc-400">Crédito Inteligente & Rápido</p>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center space-x-6 text-sm text-zinc-300">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                    <span>LGPD Protegido</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-clock text-emerald-400"></i>
+                    <span>Liberação em 10 min</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-face-smile text-emerald-400"></i>
+                    <span>Sem Fiador</span>
+                </div>
+            </div>
         </div>
+    </header>
 
-        <div class="input-group">
-            <label for="email">E-mail</label>
-            <input type="email" id="email" placeholder="seu@email.com" required>
+    <!-- Live Approval Ticker Bar -->
+    <div class="bg-cardBg border-b border-cardBorder overflow-hidden py-2 text-xs text-zinc-300">
+        <div class="max-w-6xl mx-auto px-4 flex items-center justify-between">
+            <div class="flex items-center space-x-2 text-emerald-400 font-semibold whitespace-nowrap mr-4">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                <span>AO VIVO:</span>
+            </div>
+            <div id="ticker-container" class="overflow-hidden whitespace-nowrap flex-1">
+                <div id="ticker-text" class="inline-block transition-all duration-500 font-medium text-zinc-300">
+                    Carregando atualizações em tempo real...
+                </div>
+            </div>
         </div>
+    </div>
 
-        <div class="input-group">
-            <label for="pix">Chave PIX (CPF, Celular ou Email)</label>
-            <input type="text" id="pix" placeholder="Insira sua chave" required>
+    <!-- Main Container -->
+    <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-8">
+
+        <!-- STEP 0: LANDING & SIMULATOR -->
+        <section id="step-0" class="space-y-8 step-pane">
+            <div class="text-center space-y-4 max-w-2xl mx-auto">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+                    <i class="fa-solid fa-star"></i>
+                    <span>Especial para Negativados & Autônomos</span>
+                </div>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
+                    Empréstimo Rápido na Conta <span class="text-emerald-400">Sem Complicação</span>
+                </h2>
+                <p class="text-zinc-400 text-sm md:text-base">
+                    Dinheiro direto na sua conta digital em até 10 minutos. Sem burocracia, sem consulta restritiva pesada e 100% seguro.
+                </p>
+            </div>
+
+            <!-- Como Funciona Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl flex flex-col items-center text-center space-y-2">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">1</div>
+                    <h3 class="font-bold text-white text-base">Simulação</h3>
+                    <p class="text-xs text-zinc-400">Escolha o valor ideal e o parcelamento que cabe no seu bolso.</p>
+                </div>
+                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl flex flex-col items-center text-center space-y-2">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">2</div>
+                    <h3 class="font-bold text-white text-base">Análise IA</h3>
+                    <p class="text-xs text-zinc-400">Inteligência artificial analisa seu perfil instantaneamente.</p>
+                </div>
+                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl flex flex-col items-center text-center space-y-2">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">3</div>
+                    <h3 class="font-bold text-white text-base">Liberação</h3>
+                    <p class="text-xs text-zinc-400">Crédito transferido via Pix direto para sua conta digital.</p>
+                </div>
+            </div>
+
+            <!-- Simulator Box -->
+            <div class="bg-cardBg border border-cardBorder p-6 md:p-8 rounded-3xl glow-emerald space-y-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-calculator text-emerald-400"></i>
+                        <span>Simule seu Empréstimo</span>
+                    </h3>
+                    <span class="text-xs text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">Taxas menores que bancos</span>
+                </div>
+
+                <!-- Slider & Amount -->
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <label class="text-sm font-medium text-zinc-300">Valor Desejado:</label>
+                        <span id="display-amount" class="text-2xl md:text-3xl font-extrabold text-emerald-400 font-mono">R$ 5.000</span>
+                    </div>
+                    <input type="range" id="amount-slider" min="1000" max="20000" step="500" value="5000" 
+                           class="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                           oninput="updateSimulator()">
+                    <div class="flex justify-between text-xs text-zinc-500 font-mono">
+                        <span>R$ 1.000</span>
+                        <span>R$ 10.000</span>
+                        <span>R$ 20.000</span>
+                    </div>
+                </div>
+
+                <!-- Installments Buttons -->
+                <div class="space-y-3">
+                    <label class="text-sm font-medium text-zinc-300">Escolha o Parcelamento:</label>
+                    <div class="grid grid-cols-3 md:grid-cols-5 gap-3" id="installments-group">
+                        <button type="button" onclick="setInstallments(6)" class="inst-btn py-3 px-4 rounded-xl border border-cardBorder bg-darkBg text-zinc-300 font-bold text-sm hover:border-emerald-500 transition-all">6x</button>
+                        <button type="button" onclick="setInstallments(9)" class="inst-btn py-3 px-4 rounded-xl border border-cardBorder bg-darkBg text-zinc-300 font-bold text-sm hover:border-emerald-500 transition-all">9x</button>
+                        <button type="button" onclick="setInstallments(12)" class="inst-btn py-3 px-4 rounded-xl border border-emerald-500 bg-emerald-500/10 text-emerald-400 font-bold text-sm transition-all shadow-md">12x</button>
+                        <button type="button" onclick="setInstallments(15)" class="inst-btn py-3 px-4 rounded-xl border border-cardBorder bg-darkBg text-zinc-300 font-bold text-sm hover:border-emerald-500 transition-all">15x</button>
+                        <button type="button" onclick="setInstallments(24)" class="inst-btn py-3 px-4 rounded-xl border border-cardBorder bg-darkBg text-zinc-300 font-bold text-sm hover:border-emerald-500 transition-all">24x</button>
+                    </div>
+                </div>
+
+                <!-- Calculation Summary Card -->
+                <div class="bg-darkBg border border-cardBorder p-4 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div>
+                        <p class="text-xs text-zinc-400">Valor da Parcela Estimada (<span id="summary-inst-label">12</span>x):</p>
+                        <p id="display-installment-value" class="text-2xl font-bold text-white font-mono">R$ 478,50 <span class="text-xs font-normal text-zinc-400">/mês</span></p>
+                    </div>
+                    <div class="text-left md:text-right">
+                        <p class="text-xs text-zinc-400">Taxa de Juros Especial:</p>
+                        <p class="text-sm font-semibold text-emerald-400">1.48% a.m. (IA Bancária)</p>
+                    </div>
+                </div>
+
+                <button onclick="goToStep(1)" class="w-full py-4 rounded-2xl bg-emerald-500 hover:bg-emeraldHover text-black font-extrabold text-base transition-all shadow-lg glow-emerald flex items-center justify-center space-x-2 cursor-pointer">
+                    <span>Continuar Simulação</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- STEP 1: VERIFICAÇÃO DE CPF -->
+        <section id="step-1" class="space-y-6 step-pane hidden">
+            <div class="bg-cardBg border border-cardBorder p-6 md:p-8 rounded-3xl space-y-6">
+                <div class="flex items-center space-x-3">
+                    <button onclick="goToStep(0)" class="text-zinc-400 hover:text-white"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                    <div>
+                        <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Passo 1 de 8</span>
+                        <h3 class="text-2xl font-extrabold text-white">Verificação de Segurança (CPF)</h3>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-sm font-medium text-zinc-300">Digite seu CPF:</label>
+                    <input type="text" id="input-cpf" placeholder="000.000.000-00" maxlength="14" oninput="maskCPF(this)"
+                           class="w-full bg-darkBg border border-cardBorder rounded-xl px-4 py-3.5 text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500 font-mono text-lg">
+                    <p class="text-xs text-zinc-500 flex items-center space-x-1.5 pt-1">
+                        <i class="fa-solid fa-lock text-emerald-400"></i>
+                        <span>Consulta protegida conforme as leis da LGPD e sigilo bancário.</span>
+                    </p>
+                </div>
+
+                <div id="error-cpf" class="text-red-400 text-xs hidden">Por favor, preencha um CPF válido.</div>
+
+                <button onclick="validateStep1()" class="w-full py-4 rounded-2xl bg-emerald-500 hover:bg-emeraldHover text-black font-extrabold text-base transition-all shadow-lg glow-emerald cursor-pointer">
+                    Continuar para Dados
+                </button>
+            </div>
+        </section>
+
+        <!-- STEP 2: DADOS PESSOAIS -->
+        <section id="step-2" class="space-y-6 step-pane hidden">
+            <div class="bg-cardBg border border-cardBorder p-6 md:p-8 rounded-3xl space-y-6">
+                <div class="flex items-center space-x-3">
+                    <button onclick="goToStep(1)" class="text-zinc-400 hover:text-white"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                    <div>
+                        <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Passo 2 de 8</span>
+                        <h3 class="text-2xl font-extrabold text-white">Seus Dados Pessoais</h3>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-sm font-medium text-zinc-300">Nome Completo:</label>
+                        <input type="text" id="input-name" placeholder="Ex: Maria Silva Santos" 
+                               class="w-full mt-1 bg-darkBg border border-cardBorder rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500 text-sm">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-sm font-medium text-zinc-300">Data de Nascimento:</label>
+                            <input type="date" id="input-birth" 
+                                   class="w-full mt-1 bg-darkBg border border-cardBorder rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 text-sm">
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium text-zinc-300">CPF Verificado:</label>
+                            <input type="text" id="display-locked-cpf" disabled 
+                                   class="w-full mt-1 bg-darkBg/50 border border-cardBorder rounded-xl px-4 py-3 text-zinc-400 font-mono cursor-not-allowed text-sm">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-sm font-medium text-zinc-300">Gênero:</label>
+                            <select id="input-gender" class="w-full mt-1 bg-darkBg border border-cardBorder rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 text-sm">
+                                <option value="" disabled selected>Selecione</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Feminino">Feminino</option>
+                                <option value="Outro">Outro / Prefiro não informar</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium text-zinc-300">Celular (WhatsApp):</label>
+                            <input type="text" id="input-phone" placeholder="(11) 98888-8888" maxlength="15" oninput="maskPhone(this)"
+                                   class="w-full mt-1 bg-darkBg border border-cardBorder rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500 font-mono text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="validateStep2()" class="w-full py-4 rounded-2xl bg-emerald-500 hover:bg-emeraldHover text-black font-extrabold text-base transition-all shadow-lg glow-emerald cursor-pointer">
+                    Continuar
+                </button>
+            </div>
+        </section>
+
+        <!-- STEP 3: MOTIVO, OCUPAÇÃO E NEGATIVADO -->
+        <section id="step-3" class="space-y-6 step-pane hidden">
+            <div class="bg-cardBg border border-cardBorder p-6 md:p-8 rounded-3xl space-y-6">
+                <div class="flex items-center space-x-3">
+                    <button onclick="goToStep(2)" class="text-zinc-400 hover:text-white"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                    <div>
+                        <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Passo 3 de 8</span>
+                        <h3 class="text-2xl font-extrabold text-white">Perfil Financeiro</h3>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-sm font-medium text-zinc-300 block mb-1.5">Motivo do Empréstimo:</label>
+                        <select id="input-reason" class="w-full bg-darkBg border border-cardBorder rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 text-sm">
+                            <option value="" disabled selected>Selecione o motivo principal</option>
+                            <option value="Quitar dívida">Quitar dívidas</option>
+                            <option value="Capital de giro">Capital de giro</option>
+                            <option value="Reforma casa">Reforma da casa</option>
+                            <option value="Despesas médicas">Despesas médicas</option>
+                            <option value="Educação">Educação</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium text-zinc-300 block mb-1.5">Qual sua ocupação?</label>
+                        <select id="input-occupation" class="w-full bg-darkBg border border-cardBorder rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 text-sm">
+                            <option value="" disabled selected>Selecione sua ocupação</option>
+                            <option value="CLT">CLT (Carteira Assinada)</option>
+                            <option value="Servidor(a) público">Servidor(a) Público</option>
+                            <option value="Empresário">Empresário</option>
+                            <option value="Autônomo">Autônomo</option>
+                            <option value="Aposentado (a)">Aposentado (a)</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium text-zinc-300 block mb-1.5">Seu nome está negativado?</label>
+                        <select id="input-negative" class="w-full bg-darkBg border border-cardBorder rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 text-sm">
+                            <option value="" disabled selected>Selecione</option>
+                            <option value="Sim">Sim</option>
+                            <option value="Não">Não</option>
+                            <option value="Não sei">Não sei</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button onclick="validateStep3()" class="w-full py-4 rounded-2xl bg-emerald-500 hover:bg-emeraldHover text-black font-extrabold text-base transition-all shadow-lg glow-emerald cursor-pointer">
+                    Continuar
+                </button>
+            </div>
+        </section>
+
+        <!-- STEP 4: RENDA MENSAL -->
+        <section id="step-4" class="space-y-6 step-pane hidden">
+            <div class="bg-cardBg border border-cardBorder p-6 md:p-8 rounded-3xl space-y-6">
+                <div class="flex items-center space-x-3">
+                    <button onclick="goToStep(3)" class="text-zinc-400 hover:text-white"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                    <div>
+                        <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Passo 4 de 8</span>
+                        <h3 class="text-2xl font-extrabold text-white">Qual é a sua renda mensal?</h3>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="flex items-center p-4 bg-darkBg border border-cardBorder rounded-xl cursor-pointer hover:border-emerald-500 transition group">
+                        <input type="radio" name="income" value="1000 a 2000" class="text-emerald-500 focus:ring-emerald-500 h-4 w-4 bg-darkBg border-zinc-700">
+                        <span class="ml-3 text-sm font-medium text-zinc-200 group-hover:text-white">R$ 1.000 a R$ 2.000</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-darkBg border border-cardBorder rounded-xl cursor-pointer hover:border-emerald-500 transition group">
+                        <input type="radio" name="income" value="2000 a 3000" class="text-emerald-500 focus:ring-emerald-500 h-4 w-4 bg-darkBg border-zinc-700">
+                        <span class="ml-3 text-sm font-medium text-zinc-200 group-hover:text-white">R$ 2.000 a R$ 3.000</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-darkBg border border-cardBorder rounded-xl cursor-pointer hover:border-emerald-500 transition group">
+                        <input type="radio" name="income" value="3000 a 4000" class="text-emerald-500 focus:ring-emerald-500 h-4 w-4 bg-darkBg border-zinc-700">
+                        <span class="ml-3 text-sm font-medium text-zinc-200 group-hover:text-white">R$ 3.000 a R$ 4.000</span>
+                    </label>
+                    <label class="flex items-center p-4 bg-darkBg border border-cardBorder rounded-xl cursor-pointer hover:border-emerald-500 transition group">
+                        <input type="radio" name="income" value="+ De 4000" class="text-emerald-500 focus:ring-emerald-500 h-4 w-4 bg-darkBg border-zinc-700">
+                        <span class="ml-3 text-sm font-medium text-zinc-200 group-hover:text-white">+ de R$ 4.000</span>
+                    </label>
+                </div>
+
+                <button onclick="validateStep4()" class="w-full py-4 rounded-2xl bg-emerald-500 hover:bg-emeraldHover text-black font-extrabold text-base transition-all shadow-lg glow-emerald cursor-pointer">
+                    Analisar Crédito com IA
+                </button>
+            </div>
+        </section>
+
+        <!-- STEP ANALYSIS: IA LOADING & APPROVAL -->
+        <section id="step-analysis" class="space-y-6 step-pane hidden">
+            <div class="bg-cardBg border border-emerald-500/40 p-8 rounded-3xl text-center space-y-6 glow-emerald">
+                <div id="ai-loading" class="py-12 space-y-4">
+                    <div class="w-16 h-16 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                    <h3 class="text-xl font-bold text-white">CredFácil AI está processando sua análise...</h3>
+                    <p class="text-xs text-zinc-400">Cruzando dados de score alternativo, ofertas bancárias e pré-liberação imediata.</p>
+                </div>
+
+                <div id="ai-success" class="hidden space-y-6 text-left">
+                    <div class="text-center space-y-2">
+                        <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded-full flex items-center justify-center mx-auto text-2xl">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <span class="text-xs text-emerald-400 font-bold uppercase tracking-wider bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">Aprovado pela Inteligência Artificial</span>
+                        <h2 class="text-2xl md:text-3xl font-black text-white mt-2">Parabéns, <span id="client-approved-name" class="text-emerald-400">Cliente</span>!</h2>
+                        <p class="text-zinc-400 text-xs">Seu perfil foi aprovado com prioridade máxima pelo sistema.</p>
+                    </div>
+
+                    <div class="bg-darkBg p-5 rounded-2xl border border-cardBorder space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-zinc-400">Valor Liberado:</span>
+                            <span id="approved-amount" class="text-lg font-bold text-white font-mono">R$ 5.000,00</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-zinc-400">Condição Escolhida:</span>
+                            <span id="approved-installments" class="text-sm font-semibold text-emerald-400 font-mono">12x de R$ 478,50</span>
+                        </div>
+                        <div class="flex justify-between items-center pt-2 border-t border-cardBorder">
+                            <span class="text-xs text-zinc-400">Prazo de Transferência:</span>
+                            <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded">Até 10 minutos via Pix</span>
+                        </div>
+                    </div>
+
+                    <button onclick="goToStep(5)" class="w-full py-4 rounded-2xl bg-emerald-500 hover:bg-emeraldHover text-black font-extrabold text-base transition-all shadow-lg glow-emerald cursor-pointer flex items-center justify-center space-x-2">
+                        <span>Escolher Data de Vencimento</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 5: DATA DE VENCIMENTO -->
+        <section id="step-5" class="space-y-6 step-pane hidden">
+            <div class="bg-cardBg border border-cardBorder p-6 md:p-8 rounded-3xl space-y-6">
+                <div class="flex items-center space-x-3">
+                    <button onclick="goToStep(4)" class="text-zinc-400 hover:text-white"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                    <div>
+                        <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Passo 5 de 8</span>
+                        <h3 class="text-2xl font-extrabold text-white">Escolha a Melhor Data para Pagar</h3>
+                    </div>
+                </div>
+
+                <p class="text-xs text-zinc-400">Selecione o melhor dia do mês para o vencimento das suas parcelas:</p>
+
+                <div class="grid grid-cols-3 gap-3" id="due-date-container">
+                    <button type="button" onclick="setDueDate(5)" class="due-btn py-3.5 rounded-xl border border-cardBorder bg-darkBg text-sm font-bold text-zinc-300 hover:border-emerald-500 transition">Dia 5</button>
+                    <button type="button" onclick="setDueDate(10)" class="due-btn py-3.5 rounded-xl border border-emerald-500 bg-emerald-500/10 text-sm font-bold text-emerald-400 transition shadow-md">Dia 10</button>
+                    <button type="button" onclick="setDueDate(15)" class="due-btn py-3.5 rounded-xl border border-cardBorder bg-darkBg text-sm font-bold text-zinc-300 hover:border-emerald-500 transition">Dia 15</button>
+                    <button type="button" onclick="setDueDate(20)" class="due-btn py-3.5 rounded-xl border border-cardBorder bg-darkBg text-sm font-bold text-zinc-300 hover:border-emerald-500 transition">Dia 20</button>
+                    <button type="button" onclick="setDueDate(25)" class="due-btn py-3.5 rounded-xl border border-cardBorder bg-darkBg text-sm font-bold text-zinc-300 hover:border-emerald-500 transition">Dia 25</button>
+                    <button type="button" onclick="setDueDate(30)" class="due-btn py-3.5 rounded-xl border border-cardBorder bg-darkBg text-sm font-bold text-zinc-300 hover:border-emerald-500 transition">Dia 30</button>
+                </div>
+
+                <button onclick="goToStep(6)" class="w-full py-4 rounded-2xl bg-emerald-500 hover:bg-emeraldHover text-black font-extrabold text-base transition-all shadow-lg glow-emerald cursor-pointer">
+                    Continuar para Endereço
+                </button>
+            </div>
+        </section>
+
+        <!-- STEP 6: ENDEREÇO & CEP -->
+        <section id="step-6" class="space-y-6 step-pane hidden">
+            <div class="bg-cardBg border border-cardBorder p-6 md:p-8 rounded-3xl space-y-6">
+                <div class="flex items-center space-x-3">
+                    <button onclick="goToStep(5)" class="text-zinc-400 hover:text-white"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                    <div>
+                        <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Passo 6 de 8</span>
+                        <h3 class="text-2xl font-extrabold text-white">Endereço de Cobrança</h3>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-sm font-medium text-zinc-300 block mb-1">Digite seu CEP</label>
+                        <div class="relative">
+                            <input type="text" id="form-cep" placeholder="00000-000" maxlength="9" oninput="maskCEP(this); searchCEP(this.value);"
+                                class="w-full bg-darkBg border border-cardBorder rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500 text-sm font-mono">
+                            <div id="cep-loading" class="absolute right-3 top-3 text-emerald-400 hidden text-sm"><i class="fa-solid fa-spinner animate-spin"></i></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="col-span-2">
+                            <label class="text-sm font-medium text-zinc-300 block mb-1">Logradouro / Rua</label>
+                            <input type="text" id="form-street" placeholder="Rua, Avenida..."
+                                class="w-full bg-darkBg border border-cardBorder rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500 text-sm">
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium text-zinc-300 block mb-1">Número</label>
+                            <input type="text" id="form-number" placeholder="123"
+                                class="w-full bg-darkBg border border-cardBorder rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500 text-sm">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-sm font-medium text-zinc-300 block mb-1">Bairro</label>
+                            <input type="text" id="form-neighborhood" placeholder="Bairro"
+                                class="w-full bg-darkBg border border-cardBorder rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500 text-sm">
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium text-zinc-300 block mb-1">Cidade / UF</label>
+                            <input type="text" id="form-city" placeholder="Cidade - UF"
+                                class="w-full bg-darkBg border border-cardBorder rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500 text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="validateStep6()" class="w-full py-4 rounded-2xl bg-emerald-500 hover:bg-emeraldHover text-black font-extrabold text-base transition-all shadow-lg glow-emerald cursor-pointer">
+                    Continuar para Conta Digital
+                </button>
+            </div>
+        </section>
+
+        <!-- STEP 7: CRIAÇÃO DA CONTA DIGITAL -->
+        <section id="step-7" class="space-y-6 step-pane hidden">
+            <div class="bg-cardBg border border-cardBorder p-6 md:p-8 rounded-3xl space-y-6">
+                <div class="flex items-center space-x-3">
+                    <button onclick="goToStep(6)" class="text-zinc-400 hover:text-white"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                    <div>
+                        <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Passo 7 de 8</span>
+                        <h3 class="text-2xl font-extrabold text-white">Crie sua Conta Digital Express</h3>
+                    </div>
+                </div>
+
+                <p class="text-xs text-zinc-400">Cadastre seus dados de acesso para gerenciar o saldo do seu empréstimo:</p>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-sm font-medium text-zinc-300 block mb-1">E-mail de Acesso</label>
+                        <input type="email" id="form-email" placeholder="seu.email@provedor.com"
+                            class="w-full bg-darkBg border border-cardBorder rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium text-zinc-300 block mb-1">Senha da Conta Digital</label>
+                        <input type="password" id="form-password" placeholder="••••••••"
+                            class="w-full bg-darkBg border border-cardBorder rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500 text-sm font-mono">
+                    </div>
+                </div>
+
+                <button onclick="createAccount()" class="w-full py-4 rounded-2xl bg-emerald-500 hover:bg-emeraldHover text-black font-extrabold text-base transition-all shadow-lg glow-emerald cursor-pointer">
+                    Finalizar e Acessar Conta Digital
+                </button>
+            </div>
+        </section>
+
+        <!-- STEP 8: PAINEL DA CONTA DIGITAL & CHECKOUT YAMPI -->
+        <section id="step-8" class="space-y-6 step-pane hidden">
+            <!-- Saldo Disponível -->
+            <div class="bg-gradient-to-br from-cardBg via-cardBg to-emerald-950/40 border border-emerald-500/40 rounded-3xl p-6 md:p-8 glow-emerald space-y-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-xs text-zinc-400 font-medium">Conta Digital CredFácil</span>
+                        <h3 id="dash-client-name" class="text-xl font-bold text-white mt-0.5">Titular Verificado</h3>
+                    </div>
+                    <span class="bg-emerald-500/20 text-emerald-400 text-xs px-3 py-1 rounded-full font-bold border border-emerald-500/30 flex items-center">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span> Ativa
+                    </span>
+                </div>
+
+                <div class="bg-darkBg p-5 rounded-2xl border border-cardBorder">
+                    <span class="text-xs text-zinc-400 block mb-1">Saldo Disponível para Saque Pix:</span>
+                    <div class="flex items-baseline justify-between">
+                        <span id="dash-balance" class="text-3xl md:text-4xl font-black text-emerald-400 font-mono">R$ 5.000,00</span>
+                        <span class="text-xs text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded border border-emerald-500/20 font-semibold">Pré-Liberado</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="openPixModal()" class="bg-emerald-500 hover:bg-emeraldHover text-black font-bold py-3.5 px-4 rounded-xl text-sm flex items-center justify-center space-x-2 shadow-lg glow-emerald transition cursor-pointer">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Transferir via Pix</span>
+                    </button>
+                    <button onclick="alert('Extrato atualizado. Saldo pronto para transferência.')" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold py-3.5 px-4 rounded-xl text-sm flex items-center justify-center space-x-2 transition border border-cardBorder cursor-pointer">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>Extrato</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Taxa Operacional & Botão Yampi -->
+            <div class="bg-cardBg border border-cardBorder p-6 md:p-8 rounded-3xl space-y-5">
+                <h4 class="text-base font-bold text-white flex items-center">
+                    <i class="fa-solid fa-circle-info text-emerald-400 mr-2"></i> Conclusão da Transferência Instantânea
+                </h4>
+                <p class="text-xs text-zinc-400 leading-relaxed">
+                    Seu empréstimo foi aprovado pela inteligência artificial. Para realizar a transferência via Pix para a sua conta de destino com liberação imediata sem burocracia, é necessário efetuar o pagamento da taxa operacional de liberação.
+                </p>
+
+                <div class="bg-amber-950/20 border border-amber-500/30 p-4 rounded-2xl text-amber-300 text-xs space-y-1.5">
+                    <div class="font-bold flex items-center text-amber-400">
+                        <i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Taxa de Liberação Bancária Pendente:
+                    </div>
+                    <p class="text-zinc-300">Valor único de <strong class="text-white font-mono text-sm">R$ 67,00</strong> para conclusão definitiva e envio do Pix na sua conta.</p>
+                </div>
+
+                <!-- Botão Oficial de Checkout Yampi -->
+                <a href="https://megapromo17.pay.yampi.com.br/r/P4TBONO9P0" target="_blank" 
+                   class="w-full bg-emerald-500 hover:bg-emeraldHover text-black font-extrabold py-4 px-6 rounded-2xl shadow-lg glow-emerald transition flex items-center justify-center space-x-2 text-base text-center block cursor-pointer">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>Pagar Taxa de Liberação (R$ 67,00)</span>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Pix Simulado -->
+    <div id="pix-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-cardBg border border-emerald-500/40 rounded-3xl max-w-md w-full p-6 space-y-5 glow-emerald">
+            <div class="flex justify-between items-center">
+                <h3 class="text-lg font-bold text-white flex items-center">
+                    <i class="fa-solid fa-paper-plane text-emerald-400 mr-2"></i> Transferência Pix Instantânea
+                </h3>
+                <button onclick="closePixModal()" class="text-zinc-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1">Chave Pix de Destino (CPF / Telefone / E-mail)</label>
+                    <input type="text" placeholder="Digite sua chave Pix" class="w-full bg-darkBg border border-cardBorder rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1">Valor da Transferência</label>
+                    <input type="text" id="pix-modal-amount" readonly class="w-full bg-darkBg border border-cardBorder rounded-xl px-4 py-3 text-emerald-400 font-bold text-sm font-mono">
+                </div>
+            </div>
+            <a href="https://megapromo17.pay.yampi.com.br/r/P4TBONO9P0" target="_blank" 
+               class="w-full bg-emerald-500 hover:bg-emeraldHover text-black font-bold py-3.5 rounded-xl shadow-lg glow-emerald transition flex items-center justify-center space-x-2 text-center block">
+                <span>Concluir Transferência via Pix</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
         </div>
+    </div>
 
-        <button type="submit" class="btn-submit">FINALIZAR E CONTINUAR</button>
-    </form>
+    <!-- Footer -->
+    <footer class="w-full border-t border-cardBorder bg-darkBg py-4 text-center text-xs text-zinc-500">
+        <p>&copy; 2026 CredFácil AI. Todos os direitos reservados. Regulamentado conforme resoluções de crédito digital e LGPD.</p>
+    </footer>
 
-    <p class="footer-note">Seus dados estão criptografados e seguros.</p>
-</div>
+    <!-- Script de Navegação e Lógica -->
+    <script>
+        let currentStep = 0;
+        let selectedAmount = 5000;
+        let selectedInstallments = 12;
+        let selectedDueDate = 10;
+        let userData = {
+            cpf: '',
+            name: '',
+            birth: '',
+            gender: '',
+            phone: '',
+            reason: '',
+            occupation: '',
+            negative: '',
+            income: '',
+            cep: '',
+            street: '',
+            number: '',
+            neighborhood: '',
+            city: '',
+            email: '',
+            password: ''
+        };
 
-<script>
-    document.getElementById('pixForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Simulação rápida de processamento (pode ser removida se quiser redirecionamento instantâneo)
-        const nome = document.getElementById('nome').value;
-        console.log("Processando registro para: " + nome);
+        // Live Ticker Rotativo de Aprovações
+        const tickerNames = [
+            { name: "Carlos M.", city: "São Paulo - SP", value: "R$ 4.500", status: "Aprovado" },
+            { name: "Ana Paula S.", city: "Rio de Janeiro - RJ", value: "R$ 12.000", status: "Aprovado" },
+            { name: "Roberto E.", city: "Belo Horizonte - MG", value: "R$ 8.500", status: "Aprovado" },
+            { name: "Juliana F.", city: "Curitiba - PR", value: "R$ 3.000", status: "Aprovado" },
+            { name: "Marcos V.", city: "Salvador - BA", value: "R$ 15.000", status: "Aprovado" },
+            { name: "Fernanda L.", city: "Porto Alegre - RS", value: "R$ 6.000", status: "Aprovado" },
+            { name: "Lucas R.", city: "Goiânia - GO", value: "R$ 7.500", status: "Aprovado" }
+        ];
+        let tickerIndex = 0;
+        function updateTicker() {
+            const item = tickerNames[tickerIndex];
+            const tickerEl = document.getElementById('ticker-text');
+            if(tickerEl) {
+                tickerEl.innerHTML = `
+                    <span class="text-white font-bold">${item.name}</span> (${item.city}) recebeu a aprovação de <span class="text-emerald-400 font-bold font-mono">${item.value}</span> via Pix <span class="text-emerald-500 ml-1">✓</span>
+                `;
+            }
+            tickerIndex = (tickerIndex + 1) % tickerNames.length;
+        }
+        setInterval(updateTicker, 3500);
+        updateTicker();
 
-        // Redirecionamento direto para a URL solicitada
-        window.location.href = "https://siteoficial-url.github.io/registro/";
-    });
-</script>
+        // Simulador
+        function updateSimulator() {
+            selectedAmount = parseInt(document.getElementById('amount-slider').value);
+            document.getElementById('display-amount').innerText = 'R$ ' + selectedAmount.toLocaleString('pt-BR');
+            calculateInstallment();
+        }
 
+        function setInstallments(inst) {
+            selectedInstallments = inst;
+            document.querySelectorAll('.inst-btn').forEach(btn => {
+                btn.classList.remove('border-emerald-500', 'bg-emerald-500/10', 'text-emerald-400', 'shadow-md');
+                btn.classList.add('border-cardBorder', 'bg-darkBg', 'text-zinc-300');
+            });
+            event.target.classList.remove('border-cardBorder', 'bg-darkBg', 'text-zinc-300');
+            event.target.classList.add('border-emerald-500', 'bg-emerald-500/10', 'text-emerald-400', 'shadow-md');
+            document.getElementById('summary-inst-label').innerText = inst;
+            calculateInstallment();
+        }
+
+        function calculateInstallment() {
+            const rate = 0.0148; // 1.48% a.m.
+            const n = selectedInstallments;
+            const pmt = (selectedAmount * rate * Math.pow(1 + rate, n)) / (Math.pow(1 + rate, n) - 1);
+            document.getElementById('display-installment-value').innerHTML = 'R$ ' + pmt.toFixed(2).replace('.', ',') + ' <span class="text-xs font-normal text-zinc-400">/mês</span>';
+        }
+        calculateInstallment();
+
+        // Navegação
+        function goToStep(stepNum) {
+            document.querySelectorAll('.step-pane').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(`step-${stepNum === 'analysis' ? 'analysis' : stepNum}`);
+            if(target) {
+                target.classList.remove('hidden');
+                currentStep = stepNum;
+            }
+            if(stepNum === 'analysis') {
+                runAIAnalysis();
+            }
+            if(stepNum === 8) {
+                document.getElementById('dash-client-name').innerText = userData.name || "Titular Verificado";
+                document.getElementById('dash-balance').innerText = 'R$ ' + selectedAmount.toLocaleString('pt-BR') + ',00';
+                document.getElementById('pix-modal-amount').value = 'R$ ' + selectedAmount.toLocaleString('pt-BR') + ',00';
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Máscaras
+        function maskCPF(input) {
+            let v = input.value.replace(/\D/g, '');
+            if(v.length > 11) v = v.slice(0, 11);
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            input.value = v;
+        }
+
+        function maskPhone(input) {
+            let v = input.value.replace(/\D/g, '');
+            if(v.length > 11) v = v.slice(0, 11);
+            v = v.replace(/^(\d{2})(\d)/g, '($1) $2');
+            v = v.replace(/(\d)(\d{4})$/, '$1-$2');
+            input.value = v;
+        }
+
+        function maskCEP(input) {
+            let v = input.value.replace(/\D/g, '');
+            if(v.length > 8) v = v.slice(0, 8);
+            v = v.replace(/^(\d{5})(\d)/, '$1-$2');
+            input.value = v;
+        }
+
+        // Validações
+        function validateStep1() {
+            const cpf = document.getElementById('input-cpf').value;
+            if(cpf.length < 14) {
+                document.getElementById('error-cpf').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('error-cpf').classList.add('hidden');
+            userData.cpf = cpf;
+            document.getElementById('display-locked-cpf').value = cpf;
+            goToStep(2);
+        }
+
+        function validateStep2() {
+            const name = document.getElementById('input-name').value;
+            const birth = document.getElementById('input-birth').value;
+            const gender = document.getElementById('input-gender').value;
+            const phone = document.getElementById('input-phone').value;
+
+            if(!name || !birth || !gender || !phone) {
+                alert('Por favor, preencha todos os campos pessoais.');
+                return;
+            }
+            userData.name = name;
+            userData.birth = birth;
+            userData.gender = gender;
+            userData.phone = phone;
+            goToStep(3);
+        }
+
+        function validateStep3() {
+            const reason = document.getElementById('input-reason').value;
+            const occupation = document.getElementById('input-occupation').value;
+            const negative = document.getElementById('input-negative').value;
+
+            if(!reason || !occupation || !negative) {
+                alert('Selecione todas as opções de perfil financeiro.');
+                return;
+            }
+            userData.reason = reason;
+            userData.occupation = occupation;
+            userData.negative = negative;
+            goToStep(4);
+        }
+
+        function validateStep4() {
+            const incomeSelected = document.querySelector('input[name="income"]:checked');
+            if(!incomeSelected) {
+                alert('Selecione uma faixa de renda mensal.');
+                return;
+            }
+            userData.income = incomeSelected.value;
+            goToStep('analysis');
+        }
+
+        function runAIAnalysis() {
+            document.getElementById('ai-loading').classList.remove('hidden');
+            document.getElementById('ai-success').classList.add('hidden');
+
+            setTimeout(() => {
+                document.getElementById('ai-loading').classList.add('hidden');
+                document.getElementById('ai-success').classList.remove('hidden');
+
+                document.getElementById('client-approved-name').innerText = userData.name.split(' ')[0] || "Cliente";
+                document.getElementById('approved-amount').innerText = 'R$ ' + selectedAmount.toLocaleString('pt-BR') + ',00';
+
+                const rate = 0.0148;
+                const n = selectedInstallments;
+                const pmt = (selectedAmount * rate * Math.pow(1 + rate, n)) / (Math.pow(1 + rate, n) - 1);
+                document.getElementById('approved-installments').innerText = `${selectedInstallments}x de R$ ` + pmt.toFixed(2).replace('.', ',');
+            }, 3000);
+        }
+
+        function setDueDate(day) {
+            selectedDueDate = day;
+            document.querySelectorAll('.due-btn').forEach(btn => {
+                btn.classList.remove('border-emerald-500', 'bg-emerald-500/10', 'text-emerald-400', 'shadow-md');
+                btn.classList.add('border-cardBorder', 'bg-darkBg', 'text-zinc-300');
+            });
+            event.target.classList.remove('border-cardBorder', 'bg-darkBg', 'text-zinc-300');
+            event.target.classList.add('border-emerald-500', 'bg-emerald-500/10', 'text-emerald-400', 'shadow-md');
+        }
+
+        function searchCEP(cepVal) {
+            const clean = cepVal.replace(/\D/g, '');
+            if(clean.length === 8) {
+                document.getElementById('cep-loading').classList.remove('hidden');
+                fetch(`https://viacep.com.br/ws/${clean}/json/`)
+                    .then(res => res.json())
+                    .then(data => {
+                        document.getElementById('cep-loading').classList.add('hidden');
+                        if(!data.erro) {
+                            document.getElementById('form-street').value = data.logradouro || '';
+                            document.getElementById('form-neighborhood').value = data.bairro || '';
+                            document.getElementById('form-city').value = `${data.localidade} - ${data.uf}`;
+                        }
+                    })
+                    .catch(() => {
+                        document.getElementById('cep-loading').classList.add('hidden');
+                    });
+            }
+        }
+
+        function validateStep6() {
+            const cep = document.getElementById('form-cep').value;
+            const street = document.getElementById('form-street').value;
+            const number = document.getElementById('form-number').value;
+            const city = document.getElementById('form-city').value;
+
+            if(!cep || !street || !number || !city) {
+                alert('Preencha todos os campos do endereço.');
+                return;
+            }
+            userData.cep = cep;
+            userData.street = street;
+            userData.number = number;
+            userData.city = city;
+            goToStep(7);
+        }
+
+        function createAccount() {
+            const email = document.getElementById('form-email').value;
+            const password = document.getElementById('form-password').value;
+
+            if(!email || !password) {
+                alert('Informe seu e-mail e senha para criar a conta digital.');
+                return;
+            }
+            userData.email = email;
+            userData.password = password;
+            goToStep(8);
+        }
+
+        function openPixModal() {
+            document.getElementById('pix-modal').classList.remove('hidden');
+        }
+
+        function closePixModal() {
+            document.getElementById('pix-modal').classList.add('hidden');
+        }
+    </script>
 </body>
 </html>
